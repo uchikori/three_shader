@@ -33,6 +33,9 @@ module.exports = {
     static: "dist",
     open: true,
   },
+  resolve: {
+    extensions: [".js", ".glsl", "vs", "fs"],
+  },
   module: {
     rules: [
       {
@@ -80,6 +83,13 @@ module.exports = {
       {
         test: /\.(gif|png|jpg|svg)$/,
         type: "asset/resource",
+      },
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        type: "asset/source",
+        generator: {
+          filename: "assets/images/[hash][ext]",
+        },
       },
     ],
   },

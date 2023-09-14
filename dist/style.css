@@ -971,6 +971,13 @@ a[href^="tel:"] {
   align-items: flex-end;
 }
 
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+}
+
 @media only screen and (max-width: 856px) {
   .br-pc {
     display: none;

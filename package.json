@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "webpack --mode=development --watch",
     "build": "webpack --watch",
     "start": "webpack serve"
   },

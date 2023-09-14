@@ -3,77 +3,89 @@ import "./scss/style.scss";
 //Three.jsの読み込み
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import vertexShader from "./shaders/vertexShader.glsl";
+import fragmentShader from "./shaders/fragmentShader.glsl";
 
-let scene, camera, renderer, pointLight, controls;
+/**
+ * Sizes
+ */
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
 
-window.addEventListener("load", init);
-function init() {
-  //シーン
-  scene = new THREE.Scene();
-  //カメラ
-  camera = new THREE.PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-  camera.position.set(0, 0, 500);
-  //レンダラー
-  renderer = new THREE.WebGLRenderer({ alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  document.body.appendChild(renderer.domElement);
+// Canvas
+const canvas = document.querySelector(".webgl");
 
-  //テクスチャを追加
-  let textures = new THREE.TextureLoader().load("./images/earth_opt.jpg");
+// Scene
+const scene = new THREE.Scene();
 
-  //ジオメトリー
-  let ballGeometry = new THREE.SphereGeometry(100, 64, 32);
+/**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader();
 
-  //マテリアル
-  let ballMaterial = new THREE.MeshPhysicalMaterial({ map: textures });
+// Geometry
+const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
 
-  //メッシュ化
-  let ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
-  scene.add(ballMesh);
+// Material
+const material = new THREE.ShaderMaterial({
+  vertexShader: vertexShader,
+  fragmentShader: fragmentShader,
+});
 
-  //平行光源を追加
-  let directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-  directionalLight.position.set(1, 1, 1);
-  scene.add(directionalLight);
+// Mesh
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 
-  //ポイント光源
-  pointLight = new THREE.PointLight(0xffffff, 1);
-  pointLight.position.set(-200, -200, -200);
-  scene.add(pointLight);
+// Camera
+const camera = new THREE.PerspectiveCamera(
+  75,
+  sizes.width / sizes.height,
+  0.1,
+  100
+);
+camera.position.set(0.25, -0.25, 1);
+scene.add(camera);
 
-  //ポイント光源がどこにあるのか
-  let pointLightHelper = new THREE.PointLightHelper(pointLight, 30);
-  scene.add(pointLightHelper);
+// Controls
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
-  //マウス操作
-  controls = new OrbitControls(camera, renderer.domElement);
+/**
+ * Renderer
+ */
+const renderer = new THREE.WebGLRenderer({
+  canvas: canvas,
+});
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  window.addEventListener("resize", onWindowResize);
+window.addEventListener("resize", () => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
 
-  //アニメーション
-  animate();
-}
-
-//ブラウザのリサイズに対応
-function onWindowResize() {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  //カメラのアスペクト比を正す
-  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = sizes.width / sizes.height;
   camera.updateProjectionMatrix();
-}
-//ポイント光源を公転させる
-function animate() {
-  pointLight.position.set(
-    200 * Math.sin(Date.now() / 500),
-    200 * Math.sin(Date.now() / 1000),
-    200 * Math.cos(Date.now() / 500)
-  );
+
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+/**
+ * Animate
+ */
+const clock = new THREE.Clock();
+
+const animate = () => {
+  //時間取得
+  const elapsedTime = clock.getElapsedTime();
+
+  controls.update();
+
   renderer.render(scene, camera);
-  requestAnimationFrame(animate);
-}
+
+  window.requestAnimationFrame(animate);
+};
+
+animate();
