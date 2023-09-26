@@ -768,21 +768,6 @@ a[href^="tel:"] {
   transition: background-color 0.3s ease;
 }
 
-.title {
-  font-size: 48px;
-  color: #e12867;
-  font-weight: 700;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-.title__second {
-  font-size: 20px;
-  color: #333333;
-  font-weight: 700;
-  line-height: 1.5;
-  letter-spacing: 0;
-}
-
 .box {
   background-color: #ffffff;
   border-radius: 10px;

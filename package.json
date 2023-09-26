@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "imagemin-webp-webpack-plugin": "^3.3.6",
+    "lil-gui": "^0.18.2",
     "three": "^0.153.0"
   },
   "volta": {

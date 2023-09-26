@@ -3,8 +3,16 @@ import "./scss/style.scss";
 //Three.jsの読み込み
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import vertexShader from "./shaders/vertexShader.glsl";
-import fragmentShader from "./shaders/fragmentShader.glsl";
+import * as dat from "lil-gui";
+import flag from "../dist/images/jp-flag_opt.png";
+import vertexShader from "./shaders/vertexShader";
+import fragmentShader from "./shaders/fragmentShader";
+
+/**
+ * デバッグ
+ */
+const gui = new dat.GUI();
+gui.add(document, "title");
 
 /**
  * Sizes
@@ -24,18 +32,43 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+const flagTexture = textureLoader.load(flag);
 
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+console.log(geometry.attributes.uv);
 
 // Material
 const material = new THREE.ShaderMaterial({
   vertexShader: vertexShader,
   fragmentShader: fragmentShader,
+  transparent: true,
+  side: THREE.DoubleSide,
+  uniforms: {
+    uFrequency: { value: new THREE.Vector2(10, 5) },
+    uTime: { value: 0 },
+    uColor: { value: new THREE.Color("#0000ff") },
+    uTexture: { value: flagTexture },
+  },
 });
+
+const materialFolder = gui.addFolder("material");
+materialFolder
+  .add(material.uniforms.uFrequency.value, "x")
+  .min(0)
+  .max(100)
+  .step(1)
+  .name("frequencyX");
+materialFolder
+  .add(material.uniforms.uFrequency.value, "y")
+  .min(0)
+  .max(100)
+  .step(1)
+  .name("frequencyY");
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
+mesh.scale.y = 2 / 3;
 scene.add(mesh);
 
 // Camera
@@ -80,6 +113,8 @@ const clock = new THREE.Clock();
 const animate = () => {
   //時間取得
   const elapsedTime = clock.getElapsedTime();
+
+  material.uniforms.uTime.value = elapsedTime;
 
   controls.update();
 
