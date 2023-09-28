@@ -34,7 +34,12 @@ const textureLoader = new THREE.TextureLoader();
 
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
-// const geometry = new THREE.SphereGeometry(1, 32, 16);
+// const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+
+//color
+const colorObject = {};
+colorObject.depthColor = "#2d81ae";
+colorObject.surfaceColor = "#66c1f9";
 
 // Material
 const material = new THREE.ShaderMaterial({
@@ -42,10 +47,14 @@ const material = new THREE.ShaderMaterial({
   fragmentShader: fragmentShader,
   side: THREE.DoubleSide,
   uniforms: {
-    uWaveLength: { value: 0.2 },
-    uFrequency: { value: new THREE.Vector2(10.0, 2.5) },
+    uWaveLength: { value: 0.38 },
+    uFrequency: { value: new THREE.Vector2(6.6, 3.0) },
     uTime: { value: 0 },
     uWaveSpeed: { value: 0.75 },
+    uDepthColor: { value: new THREE.Color(colorObject.depthColor) },
+    uSurfaceColor: { value: new THREE.Color(colorObject.surfaceColor) },
+    uColorOffset: { value: 0.03 },
+    uColorMultiplier: { value: 9.0 },
   },
 });
 
@@ -74,6 +83,24 @@ materialFolder
   .max(10)
   .step(0.01)
   .name("波の速さ");
+materialFolder.addColor(colorObject, "depthColor").onChange(() => {
+  material.uniforms.uDepthColor.value.set(colorObject.depthColor);
+});
+materialFolder.addColor(colorObject, "surfaceColor").onChange(() => {
+  material.uniforms.uSurfaceColor.value.set(colorObject.surfaceColor);
+});
+materialFolder
+  .add(material.uniforms.uColorOffset, "value")
+  .min(0)
+  .max(1)
+  .step(0.001)
+  .name("uColorOffset");
+materialFolder
+  .add(material.uniforms.uColorMultiplier, "value")
+  .min(0)
+  .max(10)
+  .step(0.001)
+  .name("uColorMultiplier");
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
