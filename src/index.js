@@ -4,7 +4,6 @@ import "./scss/style.scss";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as dat from "lil-gui";
-import flag from "../dist/images/jp-flag_opt.png";
 import vertexShader from "./shaders/vertexShader";
 import fragmentShader from "./shaders/fragmentShader";
 
@@ -32,44 +31,65 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const flagTexture = textureLoader.load(flag);
 
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
-console.log(geometry.attributes.uv);
+// const geometry = new THREE.SphereGeometry(1, 32, 16);
 
 // Material
 const material = new THREE.ShaderMaterial({
   vertexShader: vertexShader,
   fragmentShader: fragmentShader,
-  transparent: true,
   side: THREE.DoubleSide,
   uniforms: {
-    uFrequency: { value: new THREE.Vector2(10, 5) },
+    uWaveLength: { value: 0.2 },
+    uFrequency: { value: new THREE.Vector2(10.0, 2.5) },
     uTime: { value: 0 },
-    uColor: { value: new THREE.Color("#0000ff") },
-    uTexture: { value: flagTexture },
+    uWaveSpeed: { value: 0.75 },
   },
 });
 
-const materialFolder = gui.addFolder("material");
+const materialFolder = gui.addFolder("ShaderMaterial");
+materialFolder
+  .add(material.uniforms.uWaveLength, "value")
+  .min(0)
+  .max(1)
+  .step(0.01)
+  .name("波の長さ");
 materialFolder
   .add(material.uniforms.uFrequency.value, "x")
   .min(0)
-  .max(100)
-  .step(1)
-  .name("frequencyX");
+  .max(50)
+  .step(0.5)
+  .name("周波数X");
 materialFolder
   .add(material.uniforms.uFrequency.value, "y")
   .min(0)
-  .max(100)
-  .step(1)
-  .name("frequencyY");
+  .max(50)
+  .step(0.5)
+  .name("周波数Y");
+materialFolder
+  .add(material.uniforms.uWaveSpeed, "value")
+  .min(0)
+  .max(10)
+  .step(0.01)
+  .name("波の速さ");
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
-mesh.scale.y = 2 / 3;
+mesh.rotation.x = -Math.PI / 2;
 scene.add(mesh);
+
+window.addEventListener("resize", () => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -78,7 +98,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0.25, -0.25, 1);
+camera.position.set(0.2, 0.7, 0.7);
 scene.add(camera);
 
 // Controls
@@ -93,17 +113,6 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-window.addEventListener("resize", () => {
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
-
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(sizes.width, sizes.height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-});
 
 /**
  * Animate
