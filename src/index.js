@@ -41,8 +41,8 @@ const geometry = new THREE.PlaneGeometry(15, 15, 512, 512);
 
 //color
 const colorObject = {};
-colorObject.depthColor = "#2d81ae";
-colorObject.surfaceColor = "#66c1f9";
+colorObject.depthColor = "#c2c2c2";
+colorObject.surfaceColor = "#e6e6e6";
 
 // Material
 const material = new THREE.ShaderMaterial({
