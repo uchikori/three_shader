@@ -6,6 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as dat from "lil-gui";
 import vertexShader from "./shaders/vertexShader";
 import fragmentShader from "./shaders/fragmentShader";
+import skyImage from "../dist/images/sky_opt.jpg";
 
 /**
  * デバッグ
@@ -31,9 +32,11 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+// const skyTexture = textureLoader.load(skyImage);
+// scene.background = skyTexture;
 
 // Geometry
-const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+const geometry = new THREE.PlaneGeometry(1, 1, 512, 512);
 // const geometry = new THREE.SphereGeometry(0.5, 32, 16);
 
 //color
@@ -48,13 +51,16 @@ const material = new THREE.ShaderMaterial({
   side: THREE.DoubleSide,
   uniforms: {
     uWaveLength: { value: 0.38 },
-    uFrequency: { value: new THREE.Vector2(6.6, 3.0) },
+    uFrequency: { value: new THREE.Vector2(6.6, 3.5) },
     uTime: { value: 0 },
     uWaveSpeed: { value: 0.75 },
     uDepthColor: { value: new THREE.Color(colorObject.depthColor) },
     uSurfaceColor: { value: new THREE.Color(colorObject.surfaceColor) },
     uColorOffset: { value: 0.03 },
     uColorMultiplier: { value: 9.0 },
+    uSmallWaveElevation: { value: 0.15 },
+    uSmallWaveFrequency: { value: 3.0 },
+    uSmallWaveSpeed: { value: 0.2 },
   },
 });
 
@@ -101,6 +107,24 @@ materialFolder
   .max(10)
   .step(0.001)
   .name("uColorMultiplier");
+materialFolder
+  .add(material.uniforms.uSmallWaveElevation, "value")
+  .min(0)
+  .max(1)
+  .step(0.001)
+  .name("uSmallWaveElevation");
+materialFolder
+  .add(material.uniforms.uSmallWaveFrequency, "value")
+  .min(0)
+  .max(30)
+  .step(0.01)
+  .name("uSmallWaveFrequency");
+materialFolder
+  .add(material.uniforms.uSmallWaveSpeed, "value")
+  .min(0)
+  .max(10)
+  .step(0.01)
+  .name("uSmallWaveSpeed");
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
