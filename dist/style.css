@@ -1,6 +1,10 @@
 /*!********************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[3]!./src/scss/style.scss ***!
   \********************************************************************************************************************************************************************************************************************************************/
+@import url(https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap);
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[3]!./src/scss/style.scss (1) ***!
+  \************************************************************************************************************************************************************************************************************************************************/
 @charset "UTF-8";
 /*! destyle.css v3.0.2 | MIT License | https://github.com/nicolas-cusan/destyle.css */
 /* Reset box-model and set borders */
@@ -386,7 +390,7 @@ th {
 }
 
 html {
-  font-family: "Hiragino Sans", ヒラギノ角ゴシック, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro", Meiryo, sans-serif;
+  font-family: "Merriweather", serif;
   font-size: 0.5208333333vw;
 }
 @media only screen and (max-width: 1200px) {
@@ -406,11 +410,8 @@ html {
 }
 
 body {
-  background-image: url("images/space_opt.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  font-family: "Hiragino Sans", ヒラギノ角ゴシック, "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro", Meiryo, sans-serif;
+  font-family: "Merriweather", serif;
+  color: white;
 }
 body.fixed {
   overflow: hidden;
@@ -961,6 +962,53 @@ a[href^="tel:"] {
   top: 0;
   left: 0;
   outline: none;
+  z-index: -1;
+}
+
+/* スタイリング */
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+}
+
+header .logo {
+  font-size: 35px;
+}
+
+header ul {
+  list-style: none;
+}
+
+header ul li {
+  display: inline-block;
+  margin-right: 25px;
+}
+
+header ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+main {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+main h1 {
+  font-size: 5rem;
+  white-space: nowrap;
+  margin-bottom: 25px;
+}
+
+main p {
+  font-size: 20px;
 }
 
 @media only screen and (max-width: 856px) {

@@ -55,8 +55,8 @@ $sp: 428px; // スマホ
 //-------------------------------
 //  font-family
 //-------------------------------
-$font: "Hiragino Sans", ヒラギノ角ゴシック, "Hiragino Kaku Gothic ProN",
-  "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro", Meiryo, sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap");
+$font: "Merriweather", serif;
 $josefin: "Josefin Sans", sans-serif;
 //-------------------------------
 //  color
@@ -110,6 +110,7 @@ html {
 }
 body {
   font-family: $font;
+  color: white;
   &.fixed {
     overflow: hidden;
   }

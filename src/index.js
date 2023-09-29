@@ -36,7 +36,7 @@ const textureLoader = new THREE.TextureLoader();
 // scene.background = skyTexture;
 
 // Geometry
-const geometry = new THREE.PlaneGeometry(1, 1, 512, 512);
+const geometry = new THREE.PlaneGeometry(15, 15, 512, 512);
 // const geometry = new THREE.SphereGeometry(0.5, 32, 16);
 
 //color
@@ -89,12 +89,6 @@ materialFolder
   .max(10)
   .step(0.01)
   .name("波の速さ");
-materialFolder.addColor(colorObject, "depthColor").onChange(() => {
-  material.uniforms.uDepthColor.value.set(colorObject.depthColor);
-});
-materialFolder.addColor(colorObject, "surfaceColor").onChange(() => {
-  material.uniforms.uSurfaceColor.value.set(colorObject.surfaceColor);
-});
 materialFolder
   .add(material.uniforms.uColorOffset, "value")
   .min(0)
@@ -125,6 +119,14 @@ materialFolder
   .max(10)
   .step(0.01)
   .name("uSmallWaveSpeed");
+materialFolder.addColor(colorObject, "depthColor").onChange(() => {
+  material.uniforms.uDepthColor.value.set(colorObject.depthColor);
+});
+materialFolder.addColor(colorObject, "surfaceColor").onChange(() => {
+  material.uniforms.uSurfaceColor.value.set(colorObject.surfaceColor);
+});
+
+// gui.show(false);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
@@ -152,6 +154,26 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0.2, 0.7, 0.7);
 scene.add(camera);
 
+const cameraFolder = gui.addFolder("camera");
+cameraFolder
+  .add(camera.position, "x")
+  .min(-10)
+  .max(10)
+  .step(0.001)
+  .name("cameraPositionX");
+cameraFolder
+  .add(camera.position, "y")
+  .min(-10)
+  .max(10)
+  .step(0.001)
+  .name("cameraPositionY");
+cameraFolder
+  .add(camera.position, "z")
+  .min(-10)
+  .max(10)
+  .step(0.001)
+  .name("cameraPositionZ");
+
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
@@ -175,6 +197,10 @@ const animate = () => {
   const elapsedTime = clock.getElapsedTime();
 
   material.uniforms.uTime.value = elapsedTime;
+
+  //カメラを円周上に周回する
+  camera.position.x = Math.sin(elapsedTime * 0.17) * 3;
+  camera.position.z = Math.cos(elapsedTime * 0.17) * 1.5;
 
   controls.update();
 
