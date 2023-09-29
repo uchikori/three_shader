@@ -126,7 +126,7 @@ materialFolder.addColor(colorObject, "surfaceColor").onChange(() => {
   material.uniforms.uSurfaceColor.value.set(colorObject.surfaceColor);
 });
 
-// gui.show(false);
+gui.show(false);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
