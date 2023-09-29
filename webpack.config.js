@@ -19,7 +19,10 @@ module.exports = {
   // development に設定するとソースマップ有効でJSファイルが出力される
   mode: MODE,
   //メインのjavascriptファイル
-  entry: "./src/index.js",
+  entry: {
+    index: "./src/index.js",
+  },
+  // entry: { index: "./src/index.js" },
   //ファイルの出力設定
   output: {
     //画像をdist内のimagesフォルダに格納
@@ -27,7 +30,7 @@ module.exports = {
     //出力ファイルのディレクトリ名
     path: path.resolve(__dirname, "dist"),
     // 出力ファイル名
-    filename: "main.js",
+    filename: "[name].bundle.js",
   },
   devServer: {
     static: "dist",
@@ -39,7 +42,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.scss/,
+        test: /\.(scss|less|css)$/,
         use: [
           // CSSファイルを書き出すオプションを有効にする
           {
