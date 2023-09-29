@@ -6,7 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as dat from "lil-gui";
 import vertexShader from "./shaders/vertexShader";
 import fragmentShader from "./shaders/fragmentShader";
-import skyImage from "../dist/images/sky_opt.jpg";
+// import skyImage from "../dist/images/volcano.jpg";
 
 /**
  * デバッグ
@@ -32,17 +32,17 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-// const skyTexture = textureLoader.load(skyImage);
-// scene.background = skyTexture;
+const skyTexture = textureLoader.load("./images/volcano.jpg");
+scene.background = skyTexture;
 
 // Geometry
 const geometry = new THREE.PlaneGeometry(15, 15, 512, 512);
-// const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+// const geometry = new THREE.SphereGeometry(1, 1024, 512);
 
 //color
 const colorObject = {};
-colorObject.depthColor = "#2d81ae";
-colorObject.surfaceColor = "#66c1f9";
+colorObject.depthColor = "#8ec7e6";
+colorObject.surfaceColor = "#b4e0fe";
 
 // Material
 const material = new THREE.ShaderMaterial({
@@ -126,7 +126,7 @@ materialFolder.addColor(colorObject, "surfaceColor").onChange(() => {
   material.uniforms.uSurfaceColor.value.set(colorObject.surfaceColor);
 });
 
-gui.show(false);
+// gui.show(false);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
@@ -151,7 +151,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0.2, 0.7, 0.7);
+camera.position.set(0, 0.23, 0);
 scene.add(camera);
 
 const cameraFolder = gui.addFolder("camera");
@@ -175,8 +175,8 @@ cameraFolder
   .name("cameraPositionZ");
 
 // Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
+// const controls = new OrbitControls(camera, canvas);
+// controls.enableDamping = true;
 
 /**
  * Renderer
@@ -202,7 +202,13 @@ const animate = () => {
   camera.position.x = Math.sin(elapsedTime * 0.15) * 3;
   camera.position.z = Math.cos(elapsedTime * 0.15) * 1.5;
 
-  controls.update();
+  camera.lookAt(
+    Math.cos(elapsedTime),
+    Math.sin(elapsedTime) * 0.5,
+    Math.sin(elapsedTime) * 0.4
+  );
+
+  // controls.update();
 
   renderer.render(scene, camera);
 

@@ -103,35 +103,25 @@ module.exports = {
         },
       ],
     }),
+
     new ImageMinimizerPlugin({
+      test: /\.(png|jpe?g)$/i,
       minimizer: {
-        implementation: ImageMinimizerPlugin.imageminMinify,
+        filename: "images/[name]_opt[ext]",
+        implementation: ImageMinimizerPlugin.squooshMinify,
         options: {
-          plugins: [
-            ["mozjpeg", { quality: 89 }],
-            ["pngquant", { quality: [0.75, 0.75] }],
-          ],
+          encodeOptions: {
+            mozjpeg: {
+              quality: 89,
+            },
+            oxipng: {
+              level: 3,
+              interlace: false,
+            },
+          },
         },
       },
     }),
-    // new ImageMinimizerPlugin({
-    //   test: /\.(png|jpe?g)$/i,
-    //   minimizer: {
-    //     filename: "images/[name]_opt[ext]",
-    //     implementation: ImageMinimizerPlugin.squooshMinify,
-    //     options: {
-    //       encodeOptions: {
-    //         mozjpeg: {
-    //           quality: 89,
-    //         },
-    //         oxipng: {
-    //           level: 3,
-    //           interlace: false,
-    //         },
-    //       },
-    //     },
-    //   },
-    // }),
 
     new ImageminWebpWebpackPlugin({
       config: [
