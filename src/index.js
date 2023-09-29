@@ -32,7 +32,7 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
-const skyTexture = textureLoader.load("./images/volcano.jpg");
+const skyTexture = textureLoader.load("./images/sky-3.jpg");
 scene.background = skyTexture;
 
 // Geometry
@@ -151,7 +151,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.set(0, 0.23, 0);
+camera.position.set(0, 0.5, 0);
 scene.add(camera);
 
 const cameraFolder = gui.addFolder("camera");
@@ -204,8 +204,8 @@ const animate = () => {
 
   camera.lookAt(
     Math.cos(elapsedTime),
-    Math.sin(elapsedTime) * 0.5,
-    Math.sin(elapsedTime) * 0.4
+    Math.sin(elapsedTime * 0.5) * 0.5,
+    Math.sin(elapsedTime * 0.5) * 0.4
   );
 
   // controls.update();

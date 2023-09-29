@@ -19,10 +19,7 @@ module.exports = {
   // development に設定するとソースマップ有効でJSファイルが出力される
   mode: MODE,
   //メインのjavascriptファイル
-  entry: {
-    index: "./src/index.js",
-  },
-  // entry: { index: "./src/index.js" },
+  entry: "./src/index.js",
   //ファイルの出力設定
   output: {
     //画像をdist内のimagesフォルダに格納
@@ -30,7 +27,7 @@ module.exports = {
     //出力ファイルのディレクトリ名
     path: path.resolve(__dirname, "dist"),
     // 出力ファイル名
-    filename: "[name].bundle.js",
+    filename: "main.js",
   },
   devServer: {
     static: "dist",
@@ -42,7 +39,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(scss|less|css)$/,
+        test: /\.scss/,
         use: [
           // CSSファイルを書き出すオプションを有効にする
           {
@@ -106,25 +103,35 @@ module.exports = {
         },
       ],
     }),
-
     new ImageMinimizerPlugin({
-      test: /\.(png|jpe?g)$/i,
       minimizer: {
-        filename: "images/[name]_opt[ext]",
-        implementation: ImageMinimizerPlugin.squooshMinify,
+        implementation: ImageMinimizerPlugin.imageminMinify,
         options: {
-          encodeOptions: {
-            mozjpeg: {
-              quality: 89,
-            },
-            oxipng: {
-              level: 3,
-              interlace: false,
-            },
-          },
+          plugins: [
+            ["mozjpeg", { quality: 89 }],
+            ["pngquant", { quality: [0.75, 0.75] }],
+          ],
         },
       },
     }),
+    // new ImageMinimizerPlugin({
+    //   test: /\.(png|jpe?g)$/i,
+    //   minimizer: {
+    //     filename: "images/[name]_opt[ext]",
+    //     implementation: ImageMinimizerPlugin.squooshMinify,
+    //     options: {
+    //       encodeOptions: {
+    //         mozjpeg: {
+    //           quality: 89,
+    //         },
+    //         oxipng: {
+    //           level: 3,
+    //           interlace: false,
+    //         },
+    //       },
+    //     },
+    //   },
+    // }),
 
     new ImageminWebpWebpackPlugin({
       config: [
