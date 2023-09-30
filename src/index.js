@@ -49,6 +49,7 @@ const material = new THREE.ShaderMaterial({
   vertexShader: vertexShader,
   fragmentShader: fragmentShader,
   side: THREE.DoubleSide,
+  wireframe: true,
   uniforms: {
     uWaveLength: { value: 0.38 },
     uFrequency: { value: new THREE.Vector2(6.6, 3.5) },
